@@ -1,22 +1,22 @@
 package com.teletorflix.app.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.teletorflix.app.dtos.ImageDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ImageJsonIT {
+class ImageJsonTest {
 
-    private JacksonTester<Image> json;
+    private JacksonTester<ImageDto> json;
 
     @BeforeEach
     void setUp() {
@@ -27,17 +27,27 @@ class ImageJsonIT {
     @Test
     @DisplayName("Deserialize Image JSON should return Image instance")
     void deserializeImageJson_ReturnsImage() throws IOException {
-        assertThat(json.readObject(JsonFiles.getImageDeserialize())).isEqualTo(getImage());
+        File jsonFile = JsonTestFiles.getImageDeserialize();
+        ImageDto expected = getImage();
+
+        ImageDto imageDto = json.readObject(jsonFile);
+
+        assertThat(imageDto).isEqualTo(expected);
     }
 
-    private Image getImage() {
-        return Image.of("http://static.tvmaze.com/uploads/images/medium_portrait/0/1.jpg", "http://static.tvmaze.com/uploads/images/original_untouched/0/1.jpg");
+    private ImageDto getImage() {
+        return ImageDto.of("http://static.tvmaze.com/uploads/images/medium_portrait/0/1.jpg", "http://static.tvmaze.com/uploads/images/original_untouched/0/1.jpg");
     }
 
     @Test
     @DisplayName("Serialize Image JSON should return JSON string")
     void serializeImage_ReturnsJsonString() throws IOException {
-        assertThat(json.write(getImage())).isEqualToJson(JsonFiles.getImageExpected());
+        ImageDto imageDto = getImage();
+        File expected = JsonTestFiles.getImageExpected();
+
+        JsonContent<ImageDto> jsonContent = json.write(imageDto);
+
+        assertThat(jsonContent).isEqualToJson(expected);
     }
 
     @Test
@@ -51,14 +61,6 @@ class ImageJsonIT {
     void deserialize_Null_Throws() {
         String jsonStr = null;
         assertThrows(IllegalArgumentException.class, () -> json.parse(jsonStr));
-    }
-
-    @ParameterizedTest
-    @DisplayName("Deserialize Invalid JSON should Trhows MistmatchedInputException")
-    @ValueSource(strings = { "{\"medium\": \"http://static.tvmaze.com/uploads/images/medium_portrait/0/1.jpg\"}",
-            "{\"original\": \"http://static.tvmaze.com/uploads/images/original_untouched/0/1.jpg\"}"})
-    void deserialize_InvalidJson_ThrowsMistmatchedInputException(String jsonStr) {
-        assertThrows(MismatchedInputException.class, () -> json.parse(jsonStr));
     }
 
 }

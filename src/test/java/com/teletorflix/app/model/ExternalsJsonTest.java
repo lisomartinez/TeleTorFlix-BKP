@@ -1,22 +1,22 @@
 package com.teletorflix.app.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.teletorflix.app.dtos.ExternalsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ExternalsJsonIT {
+class ExternalsJsonTest {
 
-    private JacksonTester<Externals> json;
+    private JacksonTester<ExternalsDto> json;
 
     @BeforeEach
     void setUp() {
@@ -27,17 +27,24 @@ class ExternalsJsonIT {
     @Test
     @DisplayName("Deserialize Externals JSON should return valid Externals")
     void ExternalsFromJson_DeserializedExternalsInstance() throws IOException {
-        assertThat(json.readObject(JsonFiles.getExternalsExpected())).isEqualTo(getExternals());
+        File jsonFile = JsonTestFiles.getExternalsExpected();
+        ExternalsDto expected = getExternals();
+        ExternalsDto externalsDto = json.readObject(jsonFile);
+
+        assertThat(externalsDto).isEqualTo(expected);
     }
 
-    private Externals getExternals() {
-        return Externals.of(25988, 264492, "tt1553656");
+    private ExternalsDto getExternals() {
+        return ExternalsDto.of(25988, 264492, "tt1553656");
     }
 
     @Test
     @DisplayName("Serialize Externals should return valid JSON string")
     void SerializedExternalsInstance_JsonExternals() throws IOException {
-        assertThat(json.write(getExternals())).isEqualToJson(JsonFiles.getExternalsExpected());
+        File jsonFile = JsonTestFiles.getExternalsExpected();
+        ExternalsDto externalsDto = getExternals();
+        JsonContent<ExternalsDto> externalsDtoJson = json.write(externalsDto);
+        assertThat(externalsDtoJson).isEqualToJson(jsonFile);
     }
 
     @Test
@@ -52,13 +59,5 @@ class ExternalsJsonIT {
     void Deserialize_Null_ThrowsIllegalArgumentException() {
         String jsonStr = null;
         assertThrows(IllegalArgumentException.class, () -> json.read(jsonStr));
-    }
-
-
-    @ParameterizedTest
-    @DisplayName("An invalid JSON (missing any Externals field) should throw MistmatchedInputException")
-    @ValueSource(strings = {"{ \"tvrage\": 25988, \"thetvdb\": 264492}", "{ \"tvrage\": 25988, \"imdb\": \"tt1553656\"}", "{ \"thetvdb\": 264492, \"imdb\": \"tt1553656\"}"})
-    void Deserialized_BadFormatJson_(String jsonExternal) throws IOException {
-        assertThrows(MismatchedInputException.class, () -> json.parse(jsonExternal));
     }
 }

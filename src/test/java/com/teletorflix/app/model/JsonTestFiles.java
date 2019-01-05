@@ -4,10 +4,11 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class JsonFiles {
+public class JsonTestFiles {
     private static Path path = Paths.get("src", "test", "resources", "model");
 
-    private JsonFiles() {}
+    private JsonTestFiles() {
+    }
 
     public static File getExternalsExpected() {
        return path.resolve("ExternalsJson_Expected.json").toFile();
