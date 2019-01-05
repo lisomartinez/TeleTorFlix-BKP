@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 
 @ToString
 @EqualsAndHashCode
@@ -20,15 +22,26 @@ public class Externals {
     private final String imdb;
 
     private Externals( int tvrage, int thetvdb, String imdb) {
+
+        if(tvrage <= 0) {
+            throw new IllegalArgumentException("TVRage should be greater than or equal to 1");
+        }
+
+        if(thetvdb <= 0) {
+            throw new IllegalArgumentException("TheTVDb should be greater than or equal to 1");
+        }
+
         this.tvrage = tvrage;
         this.thetvdb = thetvdb;
-        this.imdb = imdb;
+        this.imdb = Objects.requireNonNull(imdb, "IMDB cannot be null");
     }
 
     @JsonCreator
-    public static Externals getInstance(@JsonProperty(value = "tvrage", required = true) int tvrage,
-                                        @JsonProperty(value = "thetvdb", required = true) int thetvdb,
-                                        @JsonProperty(value = "imdb", required = true) String imdb) {
+    public static Externals of(@JsonProperty(value = "tvrage", required = true) int tvrage,
+                               @JsonProperty(value = "thetvdb", required = true) int thetvdb,
+                               @JsonProperty(value = "imdb", required = true) String imdb) {
         return new Externals(tvrage, thetvdb, imdb);
     }
+
+
 }

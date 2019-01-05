@@ -14,7 +14,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ImageTest {
+class ImageJsonIT {
 
     private JacksonTester<Image> json;
 
@@ -31,7 +31,7 @@ class ImageTest {
     }
 
     private Image getImage() {
-        return Image.getInstance("http://static.tvmaze.com/uploads/images/medium_portrait/0/1.jpg", "http://static.tvmaze.com/uploads/images/original_untouched/0/1.jpg");
+        return Image.of("http://static.tvmaze.com/uploads/images/medium_portrait/0/1.jpg", "http://static.tvmaze.com/uploads/images/original_untouched/0/1.jpg");
     }
 
     @Test

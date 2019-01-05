@@ -14,7 +14,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class ExternalsTest {
+class ExternalsJsonIT {
 
     private JacksonTester<Externals> json;
 
@@ -31,7 +31,7 @@ class ExternalsTest {
     }
 
     private Externals getExternals() {
-        return Externals.getInstance(25988, 264492, "tt1553656");
+        return Externals.of(25988, 264492, "tt1553656");
     }
 
     @Test
