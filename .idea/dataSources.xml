@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="spring-boot-h2-db" uuid="c42db6db-e2a2-4c5d-b01e-088fa7c0ffa9">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:file:~/spring-boot-h2-db</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="tele_tor_flix.db" uuid="15184b86-9306-469f-8dc9-3ff31a7534cf">
+      <driver-ref>h2.unified</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.h2.Driver</jdbc-driver>
+      <jdbc-url>jdbc:h2:$PROJECT_DIR$/src/main/resources/tele_tor_flix.db</jdbc-url>
+    </data-source>
+  </component>
+</project>

@@ -1,7 +1,5 @@
 package com.teletorflix.app.service;
 
-import com.teletorflix.app.model.Externals;
-import com.teletorflix.app.model.Image;
 import com.teletorflix.app.model.Show;
 import com.teletorflix.app.repository.ShowRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,13 +9,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ShowServiceTest {
@@ -37,7 +34,7 @@ class ShowServiceTest {
         int id = 1;
         Show show = Mockito.mock(Show.class);
 
-        when(showRepository.getById(anyInt())).thenReturn(Optional.of(show));
+        when(showRepository.findById(anyInt())).thenReturn(Optional.of(show));
         when(show.getId()).thenReturn(1);
 
         Show returnedShow = showService.getShow(id);
@@ -49,10 +46,10 @@ class ShowServiceTest {
     void getShow_ShowId_ShouldCallShowRepositoryGetById() {
         int id = 1;
         Show show = Mockito.mock(Show.class);
-        when(showRepository.getById(anyInt())).thenReturn(Optional.of(show));
+        when(showRepository.findById(anyInt())).thenReturn(Optional.of(show));
 
         showService.getShow(id);
-        verify(showRepository).getById(anyInt());
+        verify(showRepository).findById(anyInt());
     }
 
 

@@ -1,8 +1,8 @@
 package com.teletorflix.app.exceptions;
 
-public class ShowNotFoundException extends RuntimeException{
-    public static final String DESCRIPTION = "Show Not Found Exception";
-    private static final long serialVersionUID = 6830756676887746370L;
+public class ShowNotFoundException extends RuntimeException {
+    public static final String DESCRIPTION = "Show not found exception";
+    private static final long serialVersionUID = 7830756676887746372L;
 
     public ShowNotFoundException() {
         super(DESCRIPTION);

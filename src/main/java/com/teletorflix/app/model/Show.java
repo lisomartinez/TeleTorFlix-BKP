@@ -1,79 +1,120 @@
 package com.teletorflix.app.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@ToString
-@Getter
-@EqualsAndHashCode
+
+/**
+ * The {@code Show} class represents a TV Show.
+ * <p>
+ * @author Lisandro Alejo Martinez
+ * @version 1.0.0
+ */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "show", schema = "PUBLIC")
 public class Show {
 
-    private final int id;
-    private final String url;
-    private final String name;
-    private final String type;
-    private final String language;
-    private final List<String> genres;
-    private final String status;
-    private final int runtime;
-    private final LocalDate premiered;
-    private final String officialSite;
-    private final Schedule schedule;
-    private final Externals externals;
-    private final Image image;
-    private final String summary;
+    @Id
+    @Column(name = "show_id" )
+    private int id;
 
-    public Show(int id, String url, String name, String type, String language, List<String> genres, String status,
-                int runtime, LocalDate premiered, String officialSite, Schedule schedule, Externals externals,
-                Image image, String summary) {
+    @Column(name = "name", nullable = false)
+    private String name;
 
-        this.id = id;
-        this.url = url;
-        this.name = name;
-        this.type = type;
-        this.language = language;
-        this.genres = genres;
-        this.status = status;
-        this.runtime = runtime;
-        this.premiered = premiered;
-        this.officialSite = officialSite;
-        this.schedule = schedule;
-        this.externals = externals;
-        this.image = image;
-        this.summary = summary;
-    }
+    @Column(name = "type", nullable = false)
+    private String type;
 
+    @Column(name = "language", nullable = false)
+    private String language;
+
+    @ManyToMany
+    @JoinTable(name = "show_genre", schema = "PUBLIC",
+            joinColumns = @JoinColumn(name = "show_id"),
+            foreignKey = @ForeignKey(name = "fk_show_genre_genre"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"),
+            inverseForeignKey = @ForeignKey(name = "fk_show_genre_show")
+    )
+    private List<Genre> genres;
+
+
+    @Column(name = "status", nullable = false)
+    private String status;
+
+    @Column(name = "runtime", nullable = false)
+    private int runtime;
+
+    @Column(name = "premiered", nullable = false)
+    private LocalDate premiered;
+
+    @Column(name = "offical_site_url", nullable = false)
+        private String officialSite;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "schedule_id",foreignKey = @ForeignKey(name = "fk_show_schedule_id"),
+            nullable = false,
+            unique = true)
+    private Schedule schedule;
+
+    @Column(name = "imdb_url", nullable = false)
+    private String imdb;
+
+    @Column(name = "tv_maze_url", nullable = false)
+    private String tvMaze;
+
+    @Column(name = "image_url", nullable = false)
+    private String image;
+
+    @Column(name = "summary", nullable = false, length = 5000)
+    private String summary;
+
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "show_id", foreignKey = @ForeignKey(name = "fk_season_show"))
+    private List<Season> seasons;
+
+
+    /**
+     * @return ShowBuilder this returns ShowBuilder.
+     */
     public static ShowBuilder builder() {
         return new ShowBuilder();
     }
 
+    /**
+     * The {@code ShowBuilder} class implements the builder pattern for constructing a Show object.
+     */
     public static class ShowBuilder {
         private int id;
-        private String url;
+        private String tvMaze;
         private String name;
         private String type;
         private String language;
-        private List<String> genres;
+        private List<Genre> genres;
         private String status;
         private int runtime;
         private LocalDate premiered;
         private String officialSite;
         private Schedule schedule;
-        private Image image;
+        private String imdb;
+        private String image;
         private String summary;
-        private Externals externals;
+        private List<Season> seasons;
 
-        public ShowBuilder id(int id) {
-            this.id = id;
+        public ShowBuilder tvMaze(String tvMaze) {
+            this.tvMaze = tvMaze;
             return this;
         }
 
-        public ShowBuilder url(String url) {
-            this.url = url;
+        public ShowBuilder id(int id) {
+            this.id = id;
             return this;
         }
 
@@ -92,7 +133,7 @@ public class Show {
             return this;
         }
 
-        public ShowBuilder genres(List<String> genres) {
+        public ShowBuilder genres(List<Genre> genres) {
             this.genres = genres;
             return this;
         }
@@ -125,13 +166,13 @@ public class Show {
             return this;
         }
 
-        public ShowBuilder image(Image image) {
-            this.image = image;
+        public ShowBuilder imdb(String imdb){
+            this.imdb = imdb;
             return this;
         }
 
-        public ShowBuilder externals(Externals externals) {
-            this.externals = externals;
+        public ShowBuilder image(String image) {
+            this.image = image;
             return this;
         }
 
@@ -140,10 +181,14 @@ public class Show {
             return this;
         }
 
+        public ShowBuilder seasons(List<Season> seasons) {
+            this.seasons = seasons;
+            return this;
+        }
+
         public Show build() {
-            return new Show(id, url, name, type, language, genres, status, runtime, premiered, officialSite,
-                    schedule, externals, image, summary);
+            return new Show(id, name, type, language, genres, status, runtime, premiered, officialSite,
+                    schedule, imdb, tvMaze, image, summary, seasons);
         }
     }
-
 }

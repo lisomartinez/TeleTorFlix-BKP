@@ -1,28 +1,29 @@
 package com.teletorflix.app.service;
 
-import com.teletorflix.app.Config.TvMazeConfig;
+import com.teletorflix.app.dtos.TvMazeShowDto;
 import com.teletorflix.app.model.Show;
+import com.teletorflix.app.repository.TvMazeClient;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
 
 @Service
 public class TvMazeServiceImpl implements TvMazeService {
 
-    private RestTemplate restTemplate;
+    private TvMazeClient client;
 
-    private TvMazeConfig tvMazeConfig;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public TvMazeServiceImpl(RestTemplate restTemplate, TvMazeConfig tvMazeConfig) {
-        this.restTemplate = restTemplate;
-        this.tvMazeConfig = tvMazeConfig;
+    public TvMazeServiceImpl(TvMazeClient client, ModelMapper modelMapper) {
+        this.client = client;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public Optional<Show> fetchById(int id) {
-        return Optional.ofNullable(restTemplate.getForObject(tvMazeConfig.getShowByIdURL(id), Show.class));
+    public Show fetchById(int id)  {
+        TvMazeShowDto show = client.getById(id);
+        return modelMapper.map(show, Show.class);
     }
+
 }

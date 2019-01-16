@@ -1,12 +1,10 @@
 package com.teletorflix.app.service;
 
+import com.teletorflix.app.exceptions.ShowNotFoundException;
 import com.teletorflix.app.model.Show;
 import com.teletorflix.app.repository.ShowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Optional;
 
 @Service
 public class ShowServiceImpl implements ShowService {
@@ -20,16 +18,7 @@ public class ShowServiceImpl implements ShowService {
 
     @Override
     public Show getShow(int id) {
-        Optional<Show> show = showRepository.getById(id);
-        if (show.isPresent()) return show.get();
-
-        Show showFromTvMaze = fetchShowTvMazeBy(id).orElseThrow(RuntimeException::new);
-        return showRepository.save(showFromTvMaze);
+        return showRepository.findById(id)
+                .orElseThrow(() -> new ShowNotFoundException("Show with id=" + id + " not found"));
     }
-
-    private Optional<Show> fetchShowTvMazeBy(int id) {
-        return Optional.empty();
-    }
-
-
 }
