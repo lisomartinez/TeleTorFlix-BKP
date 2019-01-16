@@ -34,7 +34,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RestClientTest({ TvMazeClient.class,
                   TvMazeURLConstructor.class,
                   TvMazeRestRespondeErrorHandler.class })
-class TvMazeClientIntegrationTest {
+class TvMazeClienTest {
 
     private final static String BASE_URL = "http://api.tvmaze.com/";
     private final static String SHOWS = "shows/";

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DataJpaTest
 @ActiveProfiles("test")
 @DirtiesContext
-class SeasonRepositoryIntegrationTest {
+class SeasonRepositoryIT {
 
     @Autowired
     private SeasonRepository seasonRepository;
