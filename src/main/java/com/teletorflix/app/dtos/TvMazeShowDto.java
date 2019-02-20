@@ -10,16 +10,22 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Data
+@ToString
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TvMazeShowDto {
@@ -44,6 +50,8 @@ public class TvMazeShowDto {
     private String imdbUrl = "N/A";
     private String imageUrl = "N/A";
     private String summary = "N/A";
+    
+    private LocalDateTime updateDateTime;
 
     public static ShowDtoBuilder builder() {
         return new ShowDtoBuilder();
@@ -77,8 +85,110 @@ public class TvMazeShowDto {
             this.summary = matcher.replaceAll("");
         }
     }
+    
+    
 
-    public static class ShowDtoBuilder {
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((genres == null) ? 0 : genres.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((imageUrl == null) ? 0 : imageUrl.hashCode());
+		result = prime * result + ((imdbUrl == null) ? 0 : imdbUrl.hashCode());
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((officialSite == null) ? 0 : officialSite.hashCode());
+		result = prime * result + ((premiered == null) ? 0 : premiered.hashCode());
+		result = prime * result + runtime;
+		result = prime * result + ((schedule == null) ? 0 : schedule.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((summary == null) ? 0 : summary.hashCode());
+		result = prime * result + ((tvMazeUrl == null) ? 0 : tvMazeUrl.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TvMazeShowDto other = (TvMazeShowDto) obj;
+		if (genres == null) {
+			if (other.genres != null)
+				return false;
+		} else if (!genres.equals(other.genres))
+			return false;
+		if (id != other.id)
+			return false;
+		if (imageUrl == null) {
+			if (other.imageUrl != null)
+				return false;
+		} else if (!imageUrl.equals(other.imageUrl))
+			return false;
+		if (imdbUrl == null) {
+			if (other.imdbUrl != null)
+				return false;
+		} else if (!imdbUrl.equals(other.imdbUrl))
+			return false;
+		if (language == null) {
+			if (other.language != null)
+				return false;
+		} else if (!language.equals(other.language))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (officialSite == null) {
+			if (other.officialSite != null)
+				return false;
+		} else if (!officialSite.equals(other.officialSite))
+			return false;
+		if (premiered == null) {
+			if (other.premiered != null)
+				return false;
+		} else if (!premiered.equals(other.premiered))
+			return false;
+		if (runtime != other.runtime)
+			return false;
+		if (schedule == null) {
+			if (other.schedule != null)
+				return false;
+		} else if (!schedule.equals(other.schedule))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		if (summary == null) {
+			if (other.summary != null)
+				return false;
+		} else if (!summary.equals(other.summary))
+			return false;
+		if (tvMazeUrl == null) {
+			if (other.tvMazeUrl != null)
+				return false;
+		} else if (!tvMazeUrl.equals(other.tvMazeUrl))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
+
+
+
+	public static class ShowDtoBuilder {
         private int id;
         private String name;
         private String type = "N/A";
@@ -171,8 +281,9 @@ public class TvMazeShowDto {
         }
 
         public TvMazeShowDto build() {
+        	LocalDateTime updateTime = LocalDateTime.now();
             return new TvMazeShowDto(id, name,type, language, genres, status, runtime, premiered, officialSite,
-                    schedule, tvMazeUrl, imdbUrl, imageUrl, summary);
+                    schedule, tvMazeUrl, imdbUrl, imageUrl, summary, updateTime);
         }
     }
 

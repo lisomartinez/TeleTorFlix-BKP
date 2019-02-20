@@ -41,12 +41,12 @@ class TvMazeServiceFunctionalTest {
         TvMazeShowDto expectedDto = objectMapper.readValue(showDeserialize, TvMazeShowDto.class);
         Show expected = modelMapper.map(expectedDto, Show.class);
 
-        Show show = tvMazeService.fetchById(1);
+        Show show = tvMazeService.getShowById(1);
         assertThat(show).isEqualTo(expected);
     }
 
     @Test
     void FetchById_InvalidID_ThrowsShowNotFoundException() {
-        assertThrows(IllegalArgumentException.class, () -> tvMazeService.fetchById(0));
+        assertThrows(IllegalArgumentException.class, () -> tvMazeService.getShowById(0));
     }
 }

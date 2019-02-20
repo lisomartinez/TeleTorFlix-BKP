@@ -2,7 +2,7 @@ package com.teletorflix.app.service;
 
 import com.teletorflix.app.dtos.TvMazeShowDto;
 import com.teletorflix.app.model.Show;
-import com.teletorflix.app.repository.TvMazeClient;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class TvMazeServiceImpl implements TvMazeService {
     }
 
     @Override
-    public Show fetchById(int id)  {
+    public Show getShowById(int id)  {
         TvMazeShowDto show = client.getById(id);
         return modelMapper.map(show, Show.class);
     }

@@ -58,7 +58,7 @@ class TvMazeShowDtoTest {
                     .schedule(TvMazeScheduleDto.of(List.of(DayOfWeek.THURSDAY), LocalTime.of(22, 0)))
                     .tvMazeUrl("http://www.tvmaze.com/shows/1/under-the-dome")
                     .imdbUrl("tt1553656")
-                    .imageUrl("http://static.tvmaze.com/uploads/images/original_untouched/0/1.jpg")
+                    .imageUrl("http://static.tvmaze.com/uploads/images/original_untouched/81/202627.jpg")
                     .summary("Under the Dome is the story of a small town that is suddenly and inexplicably " +
                             "sealed off from the rest of the world by an enormous transparent dome. " +
                             "The town's inhabitants must deal with surviving the post-apocalyptic conditions " +

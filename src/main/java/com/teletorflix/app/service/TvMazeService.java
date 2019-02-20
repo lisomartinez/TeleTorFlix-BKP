@@ -4,5 +4,5 @@ import com.teletorflix.app.model.Show;
 
 public interface TvMazeService {
 
-    Show fetchById(int id);
+    Show getShowById(int id);
 }

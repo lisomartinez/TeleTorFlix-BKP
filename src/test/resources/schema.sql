@@ -42,6 +42,7 @@
       offical_site_url varchar(255) not null,
       tv_maze_url varchar(255) not null,
       summary varchar(5000) not null,
+      last_update timestamp not null,
       constraint fk_show_schedule_id foreign key (schedule_id) references public.schedule
     );
 

@@ -37,7 +37,7 @@ class ShowServiceTest {
         when(showRepository.findById(anyInt())).thenReturn(Optional.of(show));
         when(show.getId()).thenReturn(1);
 
-        Show returnedShow = showService.getShow(id);
+        Show returnedShow = showService.getShowById(id);
         assertThat(returnedShow.getId()).isEqualTo(id);
     }
 
@@ -48,7 +48,7 @@ class ShowServiceTest {
         Show show = Mockito.mock(Show.class);
         when(showRepository.findById(anyInt())).thenReturn(Optional.of(show));
 
-        showService.getShow(id);
+        showService.getShowById(id);
         verify(showRepository).findById(anyInt());
     }
 

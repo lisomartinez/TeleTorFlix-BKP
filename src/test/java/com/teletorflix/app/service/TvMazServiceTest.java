@@ -3,7 +3,7 @@ package com.teletorflix.app.service;
 import com.teletorflix.app.dtos.TvMazeShowDto;
 import com.teletorflix.app.exceptions.TvMazeShowNotFoundException;
 import com.teletorflix.app.model.Show;
-import com.teletorflix.app.repository.TvMazeClient;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ public class TvMazServiceTest {
         when(tvMazeClient.getById(id)).thenReturn(tvMazeShowDto);
         when(modelMapper.map(tvMazeShowDto, Show.class)).thenReturn(show);
 
-        Show returnedShow = tvMazeService.fetchById(id);
+        Show returnedShow = tvMazeService.getShowById(id);
 
         assertThat(returnedShow).isEqualTo(show);
     }
@@ -56,7 +56,7 @@ public class TvMazServiceTest {
         Show show = Mockito.mock(Show.class);
         when(tvMazeClient.getById(id)).thenThrow(TvMazeShowNotFoundException.class);
 
-        assertThrows(TvMazeShowNotFoundException.class, () -> tvMazeService.fetchById(id));
+        assertThrows(TvMazeShowNotFoundException.class, () -> tvMazeService.getShowById(id));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class TvMazServiceTest {
 
         when(modelMapper.map(tvMazeShowDto, Show.class)).thenReturn(show);
 
-        tvMazeService.fetchById(id);
+        tvMazeService.getShowById(id);
 
         verify(tvMazeClient).getById(id);
     }

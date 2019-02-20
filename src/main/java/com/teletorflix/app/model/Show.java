@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -75,10 +76,13 @@ public class Show {
     @Column(name = "summary", nullable = false, length = 5000)
     private String summary;
 
+    @Column(name="last_update", nullable = false)
+    private LocalDateTime lastUpdate; 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "show_id", foreignKey = @ForeignKey(name = "fk_season_show"))
     private List<Season> seasons;
+    
 
 
     /**
@@ -106,6 +110,7 @@ public class Show {
         private String imdb;
         private String image;
         private String summary;
+        private LocalDateTime lastUpdate;
         private List<Season> seasons;
 
         public ShowBuilder tvMaze(String tvMaze) {
@@ -181,6 +186,11 @@ public class Show {
             return this;
         }
 
+        public ShowBuilder lastUpdate(LocalDateTime time) {
+        	this.lastUpdate = time;
+        	return this;
+        }
+        
         public ShowBuilder seasons(List<Season> seasons) {
             this.seasons = seasons;
             return this;
@@ -188,7 +198,7 @@ public class Show {
 
         public Show build() {
             return new Show(id, name, type, language, genres, status, runtime, premiered, officialSite,
-                    schedule, imdb, tvMaze, image, summary, seasons);
+                    schedule, imdb, tvMaze, image, summary, lastUpdate, seasons);
         }
     }
 }
